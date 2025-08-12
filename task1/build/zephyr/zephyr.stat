@@ -1,0 +1,476 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              REL (Relocatable file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          0 (bytes into file)
+  Start of section headers:          400820 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           0 (bytes)
+  Number of program headers:         0
+  Size of section headers:           40 (bytes)
+  Number of section headers:         446
+  Section header string table index: 445
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text._Offse[...] PROGBITS        00000000 000034 000001 00  AX  0   0  1
+  [ 2] .text.task1       PROGBITS        00000000 000035 000042 00  AX  0   0  1
+  [ 3] .rel.text.task1   REL             00000000 04a6f0 000030 08   I 443   2  4
+  [ 4] .text.task3       PROGBITS        00000000 000077 000042 00  AX  0   0  1
+  [ 5] .rel.text.task3   REL             00000000 04a720 000030 08   I 443   4  4
+  [ 6] .text.task2       PROGBITS        00000000 0000b9 000042 00  AX  0   0  1
+  [ 7] .rel.text.task2   REL             00000000 04a750 000030 08   I 443   6  4
+  [ 8] .text.main        PROGBITS        00000000 0000fb 000097 00  AX  0   0  1
+  [ 9] .rel.text.main    REL             00000000 04a780 000060 08   I 443   8  4
+  [10] .text.arch_p[...] PROGBITS        00000000 000192 000003 00  AX  0   0  1
+  [11] .text.char_out    PROGBITS        00000000 000195 000006 00  AX  0   0  1
+  [12] .rel.text.ch[...] REL             00000000 04a7e0 000008 08   I 443  11  4
+  [13] .text.__prin[...] PROGBITS        00000000 00019b 00000d 00  AX  0   0  1
+  [14] .rel.text.__[...] REL             00000000 04a7e8 000008 08   I 443  13  4
+  [15] .text.vprintk     PROGBITS        00000000 0001a8 00001f 00  AX  0   0  1
+  [16] .rel.text.vprintk REL             00000000 04a7f0 000010 08   I 443  15  4
+  [17] .text.printk      PROGBITS        00000000 0001c7 000017 00  AX  0   0  1
+  [18] .rel.text.printk  REL             00000000 04a800 000008 08   I 443  17  4
+  [19] .text.z_thre[...] PROGBITS        00000000 0001de 00003a 00  AX  0   0  1
+  [20] .rel.text.z_[...] REL             00000000 04a808 000028 08   I 443  19  4
+  [21] .text.outs        PROGBITS        00000000 000218 00004b 00  AX  0   0  1
+  [22] .text.extrac[...] PROGBITS        00000000 000263 000037 00  AX  0   0  1
+  [23] .rel.text.ex[...] REL             00000000 04a830 000008 08   I 443  22  4
+  [24] .text.encode_uint PROGBITS        00000000 00029a 0000d9 00  AX  0   0  1
+  [25] .rel.text.en[...] REL             00000000 04a838 000010 08   I 443  24  4
+  [26] .text.z_cbvp[...] PROGBITS        00000000 000373 0007f1 00  AX  0   0  1
+  [27] .rel.text.z_[...] REL             00000000 04a848 000070 08   I 443  26  4
+  [28] .text.assert[...] PROGBITS        00000000 000b64 000017 00  AX  0   0  1
+  [29] .rel.text.as[...] REL             00000000 04a8b8 000008 08   I 443  28  4
+  [30] .text._Confi[...] PROGBITS        00000000 000b7b 000001 00  AX  0   0  1
+  [31] .text.sys_tr[...] PROGBITS        00000000 000b7c 000001 00  AX  0   0  1
+  [32] .text.sys_tr[...] PROGBITS        00000000 000b7d 000001 00  AX  0   0  1
+  [33] .text.sys_tr[...] PROGBITS        00000000 000b7e 000001 00  AX  0   0  1
+  [34] .text.arch_c[...] PROGBITS        00000000 000b7f 000016 00  AX  0   0  1
+  [35] .rel.text.ar[...] REL             00000000 04a8c0 000018 08   I 443  34  4
+  [36] .text.arch_s[...] PROGBITS        00000000 000b95 000027 00  AX  0   0  1
+  [37] .rel.text.ar[...] REL             00000000 04a8d8 000028 08   I 443  36  4
+  [38] .text.arch_i[...] PROGBITS        00000000 000bbc 000005 00  AX  0   0  1
+  [39] .rel.text.ar[...] REL             00000000 04a900 000008 08   I 443  38  4
+  [40] .text.arch_swap   PROGBITS        00000000 000bc1 000050 00  AX  0   0  1
+  [41] .rel.text.ar[...] REL             00000000 04a908 000038 08   I 443  40  4
+  [42] .text.arch_s[...] PROGBITS        00000000 000c11 00001c 00  AX  0   0  1
+  [43] .rel.text.ar[...] REL             00000000 04a940 000018 08   I 443  42  4
+  [44] .text.arch_n[...] PROGBITS        00000000 000c2d 000043 00  AX  0   0  1
+  [45] .rel.text.ar[...] REL             00000000 04a958 000008 08   I 443  44  4
+  [46] .text.posix_[...] PROGBITS        00000000 000c70 00001d 00  AX  0   0  1
+  [47] .rel.text.po[...] REL             00000000 04a960 000010 08   I 443  46  4
+  [48] .text.z_impl[...] PROGBITS        00000000 000c8d 000084 00  AX  0   0  1
+  [49] .rel.text.z_[...] REL             00000000 04a970 000040 08   I 443  48  4
+  [50] .text.posix_[...] PROGBITS        00000000 000d11 00001a 00  AX  0   0  1
+  [51] .rel.text.po[...] REL             00000000 04a9b0 000018 08   I 443  50  4
+  [52] .text.posix_[...] PROGBITS        00000000 000d2b 000016 00  AX  0   0  1
+  [53] .rel.text.po[...] REL             00000000 04a9c8 000010 08   I 443  52  4
+  [54] .text.posix_swap  PROGBITS        00000000 000d41 000017 00  AX  0   0  1
+  [55] .rel.text.po[...] REL             00000000 04a9d8 000010 08   I 443  54  4
+  [56] .text.posix_[...] PROGBITS        00000000 000d58 000019 00  AX  0   0  1
+  [57] .rel.text.po[...] REL             00000000 04a9e8 000010 08   I 443  56  4
+  [58] .text.posix_[...] PROGBITS        00000000 000d71 000019 00  AX  0   0  1
+  [59] .rel.text.po[...] REL             00000000 04a9f8 000010 08   I 443  58  4
+  [60] .text.posix_[...] PROGBITS        00000000 000d8a 000019 00  AX  0   0  1
+  [61] .rel.text.po[...] REL             00000000 04aa08 000010 08   I 443  60  4
+  [62] .text.posix_[...] PROGBITS        00000000 000da3 000016 00  AX  0   0  1
+  [63] .rel.text.po[...] REL             00000000 04aa18 000010 08   I 443  62  4
+  [64] .text.posix_[...] PROGBITS        00000000 000db9 000016 00  AX  0   0  1
+  [65] .rel.text.po[...] REL             00000000 04aa28 000010 08   I 443  64  4
+  [66] .text.posix_[...] PROGBITS        00000000 000dcf 00001a 00  AX  0   0  1
+  [67] .rel.text.po[...] REL             00000000 04aa38 000018 08   I 443  66  4
+  [68] .text.posix_[...] PROGBITS        00000000 000de9 00002c 00  AX  0   0  1
+  [69] .rel.text.po[...] REL             00000000 04aa50 000030 08   I 443  68  4
+  [70] .text.posix_[...] PROGBITS        00000000 000e15 000028 00  AX  0   0  1
+  [71] .rel.text.po[...] REL             00000000 04aa80 000020 08   I 443  70  4
+  [72] .text.run_na[...] PROGBITS        00000000 000e3d 000029 00  AX  0   0  1
+  [73] .rel.text.ru[...] REL             00000000 04aaa0 000010 08   I 443  72  4
+  [74] .text.native[...] PROGBITS        00000000 000e66 000005 00  AX  0   0  1
+  [75] .rel.text.na[...] REL             00000000 04aab0 000008 08   I 443  74  4
+  [76] .text.posix_[...] PROGBITS        00000000 000e6b 000126 00  AX  0   0  1
+  [77] .rel.text.po[...] REL             00000000 04aab8 0000d8 08   I 443  76  4
+  [78] .text.posix_[...] PROGBITS        00000000 000f91 000012 00  AX  0   0  1
+  [79] .rel.text.po[...] REL             00000000 04ab90 000008 08   I 443  78  4
+  [80] .text.posix_[...] PROGBITS        00000000 000fa3 000005 00  AX  0   0  1
+  [81] .rel.text.po[...] REL             00000000 04ab98 000008 08   I 443  80  4
+  [82] .text.posix_[...] PROGBITS        00000000 000fa8 000012 00  AX  0   0  1
+  [83] .rel.text.po[...] REL             00000000 04aba0 000008 08   I 443  82  4
+  [84] .text.posix_[...] PROGBITS        00000000 000fba 000005 00  AX  0   0  1
+  [85] .rel.text.po[...] REL             00000000 04aba8 000008 08   I 443  84  4
+  [86] .text.posix_[...] PROGBITS        00000000 000fbf 00004c 00  AX  0   0  1
+  [87] .rel.text.po[...] REL             00000000 04abb0 000030 08   I 443  86  4
+  [88] .text.posix_[...] PROGBITS        00000000 00100b 000021 00  AX  0   0  1
+  [89] .rel.text.po[...] REL             00000000 04abe0 000018 08   I 443  88  4
+  [90] .text.set_re[...] PROGBITS        00000000 00102c 000012 00  AX  0   0  1
+  [91] .rel.text.se[...] REL             00000000 04abf8 000008 08   I 443  90  4
+  [92] .text.posix_[...] PROGBITS        00000000 00103e 000012 00  AX  0   0  1
+  [93] .rel.text.po[...] REL             00000000 04ac00 000008 08   I 443  92  4
+  [94] .text.posix_[...] PROGBITS        00000000 001050 000017 00  AX  0   0  1
+  [95] .rel.text.po[...] REL             00000000 04ac08 000008 08   I 443  94  4
+  [96] .text.posix_[...] PROGBITS        00000000 001067 000017 00  AX  0   0  1
+  [97] .rel.text.po[...] REL             00000000 04ac10 000008 08   I 443  96  4
+  [98] .text.posix_[...] PROGBITS        00000000 00107e 000017 00  AX  0   0  1
+  [99] .rel.text.po[...] REL             00000000 04ac18 000010 08   I 443  98  4
+  [100] .text.print_char  PROGBITS        00000000 001095 000066 00  AX  0   0  1
+  [101] .rel.text.pr[...] REL             00000000 04ac28 000048 08   I 443 100  4
+  [102] .text.uart_c[...] PROGBITS        00000000 0010fb 000032 00  AX  0   0  1
+  [103] .rel.text.ua[...] REL             00000000 04ac70 000020 08   I 443 102  4
+  [104] .text.console_out PROGBITS        00000000 00112d 00003a 00  AX  0   0  1
+  [105] .rel.text.co[...] REL             00000000 04ac90 000018 08   I 443 104  4
+  [106] .text.auto_a[...] PROGBITS        00000000 001167 000017 00  AX  0   0  1
+  [107] .rel.text.au[...] REL             00000000 04aca8 000010 08   I 443 106  4
+  [108] .text.auto_a[...] PROGBITS        00000000 00117e 000008 00  AX  0   0  1
+  [109] .rel.text.au[...] REL             00000000 04acb8 000008 08   I 443 108  4
+  [110] .text.wait_pts_cb PROGBITS        00000000 001186 000008 00  AX  0   0  1
+  [111] .rel.text.wa[...] REL             00000000 04acc0 000008 08   I 443 110  4
+  [112] .text.np_uar[...] PROGBITS        00000000 00118e 000089 00  AX  0   0  1
+  [113] .rel.text.np[...] REL             00000000 04acc8 000040 08   I 443 112  4
+  [114] .text.np_add[...] PROGBITS        00000000 001217 000015 00  AX  0   0  1
+  [115] .rel.text.np[...] REL             00000000 04ad08 000010 08   I 443 114  4
+  [116] .text.np_cle[...] PROGBITS        00000000 00122c 00002e 00  AX  0   0  1
+  [117] .rel.text.np[...] REL             00000000 04ad18 000020 08   I 443 116  4
+  [118] .text.np_uar[...] PROGBITS        00000000 00125a 00004f 00  AX  0   0  1
+  [119] .rel.text.np[...] REL             00000000 04ad38 000018 08   I 443 118  4
+  [120] .text.np_uar[...] PROGBITS        00000000 0012a9 000060 00  AX  0   0  1
+  [121] .rel.text.np[...] REL             00000000 04ad50 000020 08   I 443 120  4
+  [122] .text.np_tim[...] PROGBITS        00000000 001309 000085 00  AX  0   0  1
+  [123] .rel.text.np[...] REL             00000000 04ad70 000038 08   I 443 122  4
+  [124] .text.sys_cl[...] PROGBITS        00000000 00138e 00006a 00  AX  0   0  1
+  [125] .rel.text.sy[...] REL             00000000 04ada8 000048 08   I 443 124  4
+  [126] .text.sys_cl[...] PROGBITS        00000000 0013f8 000034 00  AX  0   0  1
+  [127] .rel.text.sy[...] REL             00000000 04adf0 000010 08   I 443 126  4
+  [128] .text.sys_cl[...] PROGBITS        00000000 00142c 00003d 00  AX  0   0  1
+  [129] .rel.text.sy[...] REL             00000000 04ae00 000028 08   I 443 128  4
+  [130] .text.z_devi[...] PROGBITS        00000000 001469 000001 00  AX  0   0  1
+  [131] .text.z_impl[...] PROGBITS        00000000 00146a 000024 00  AX  0   0  1
+  [132] .text.k_sys_[...] PROGBITS        00000000 00148e 00000e 00  AX  0   0  1
+  [133] .rel.text.k_[...] REL             00000000 04ae28 000008 08   I 443 132  4
+  [134] .text.z_fata[...] PROGBITS        00000000 00149c 000045 00  AX  0   0  1
+  [135] .rel.text.z_[...] REL             00000000 04ae30 000028 08   I 443 134  4
+  [136] .text.do_dev[...] PROGBITS        00000000 0014e1 000041 00  AX  0   0  1
+  [137] .text.z_sys_[...] PROGBITS        00000000 001522 000036 00  AX  0   0  1
+  [138] .rel.text.z_[...] REL             00000000 04ae58 000018 08   I 443 137  4
+  [139] .text.bg_thr[...] PROGBITS        00000000 001558 0000e7 00  AX  0   0  1
+  [140] .rel.text.bg[...] REL             00000000 04ae70 000090 08   I 443 139  4
+  [141] .text.z_init_cpu  PROGBITS        00000000 00163f 000065 00  AX  0   0  1
+  [142] .rel.text.z_[...] REL             00000000 04af00 000030 08   I 443 141  4
+  [143] .text.z_cstart    PROGBITS        00000000 0016a4 0000bd 00  AX  0   0  1
+  [144] .rel.text.z_[...] REL             00000000 04af30 0000c0 08   I 443 143  4
+  [145] .text.idle        PROGBITS        00000000 001761 000012 00  AX  0   0  1
+  [146] .rel.text.idle    REL             00000000 04aff0 000010 08   I 443 145  4
+  [147] .text.z_impl[...] PROGBITS        00000000 001773 000091 00  AX  0   0  1
+  [148] .rel.text.z_[...] REL             00000000 04b000 000030 08   I 443 147  4
+  [149] .text.z_impl[...] PROGBITS        00000000 001804 000067 00  AX  0   0  1
+  [150] .rel.text.z_[...] REL             00000000 04b030 000028 08   I 443 149  4
+  [151] .text.z_setu[...] PROGBITS        00000000 00186b 000083 00  AX  0   0  1
+  [152] .rel.text.z_[...] REL             00000000 04b058 000010 08   I 443 151  4
+  [153] .text.z_impl[...] PROGBITS        00000000 0018ee 00006f 00  AX  0   0  1
+  [154] .rel.text.z_[...] REL             00000000 04b068 000020 08   I 443 153  4
+  [155] .text.z_dumm[...] PROGBITS        00000000 00195d 00001a 00  AX  0   0  1
+  [156] .rel.text.z_[...] REL             00000000 04b088 000008 08   I 443 155  4
+  [157] .text.sys_dl[...] PROGBITS        00000000 001977 000018 00  AX  0   0  1
+  [158] .text.unpend[...] PROGBITS        00000000 00198f 000018 00  AX  0   0  1
+  [159] .rel.text.un[...] REL             00000000 04b090 000008 08   I 443 158  4
+  [160] .text.ready_[...] PROGBITS        00000000 0019a7 0000bf 00  AX  0   0  1
+  [161] .rel.text.re[...] REL             00000000 04b098 000060 08   I 443 160  4
+  [162] .text.unread[...] PROGBITS        00000000 001a66 000063 00  AX  0   0  1
+  [163] .rel.text.un[...] REL             00000000 04b0f8 000038 08   I 443 162  4
+  [164] .text.add_th[...] PROGBITS        00000000 001ac9 00002a 00  AX  0   0  1
+  [165] .rel.text.ad[...] REL             00000000 04b130 000010 08   I 443 164  4
+  [166] .text.add_to[...] PROGBITS        00000000 001af3 00005e 00  AX  0   0  1
+  [167] .rel.text.ad[...] REL             00000000 04b140 000008 08   I 443 166  4
+  [168] .text.move_t[...] PROGBITS        00000000 001b51 0000bd 00  AX  0   0  1
+  [169] .rel.text.mo[...] REL             00000000 04b148 000060 08   I 443 168  4
+  [170] .text.z_read[...] PROGBITS        00000000 001c0e 000021 00  AX  0   0  1
+  [171] .rel.text.z_[...] REL             00000000 04b1a8 000018 08   I 443 170  4
+  [172] .text.z_sche[...] PROGBITS        00000000 001c2f 000038 00  AX  0   0  1
+  [173] .rel.text.z_[...] REL             00000000 04b1c0 000020 08   I 443 172  4
+  [174] .text.z_thre[...] PROGBITS        00000000 001c67 000019 00  AX  0   0  1
+  [175] .rel.text.z_[...] REL             00000000 04b1e0 000008 08   I 443 174  4
+  [176] .text.z_pend_curr PROGBITS        00000000 001c80 000048 00  AX  0   0  1
+  [177] .rel.text.z_[...] REL             00000000 04b1e8 000028 08   I 443 176  4
+  [178] .text.z_resc[...] PROGBITS        00000000 001cc8 000034 00  AX  0   0  1
+  [179] .rel.text.z_[...] REL             00000000 04b210 000028 08   I 443 178  4
+  [180] .text.z_resc[...] PROGBITS        00000000 001cfc 000034 00  AX  0   0  1
+  [181] .rel.text.z_[...] REL             00000000 04b238 000028 08   I 443 180  4
+  [182] .text.k_sche[...] PROGBITS        00000000 001d30 000022 00  AX  0   0  1
+  [183] .rel.text.k_[...] REL             00000000 04b260 000018 08   I 443 182  4
+  [184] .text.k_sche[...] PROGBITS        00000000 001d52 000076 00  AX  0   0  1
+  [185] .rel.text.k_[...] REL             00000000 04b278 000050 08   I 443 184  4
+  [186] .text.z_sche[...] PROGBITS        00000000 001dc8 000015 00  AX  0   0  1
+  [187] .rel.text.z_[...] REL             00000000 04b2c8 000020 08   I 443 186  4
+  [188] .text.z_impl[...] PROGBITS        00000000 001ddd 0000b9 00  AX  0   0  1
+  [189] .rel.text.z_[...] REL             00000000 04b2e8 000070 08   I 443 188  4
+  [190] .text.z_tick[...] PROGBITS        00000000 001e96 000089 00  AX  0   0  1
+  [191] .rel.text.z_[...] REL             00000000 04b358 000058 08   I 443 190  4
+  [192] .text.z_impl[...] PROGBITS        00000000 001f1f 000054 00  AX  0   0  1
+  [193] .rel.text.z_[...] REL             00000000 04b3b0 000008 08   I 443 192  4
+  [194] .text.z_impl[...] PROGBITS        00000000 001f73 000054 00  AX  0   0  1
+  [195] .rel.text.z_[...] REL             00000000 04b3b8 000030 08   I 443 194  4
+  [196] .text.z_impl[...] PROGBITS        00000000 001fc7 000006 00  AX  0   0  1
+  [197] .rel.text.z_[...] REL             00000000 04b3e8 000008 08   I 443 196  4
+  [198] .text.z_thre[...] PROGBITS        00000000 001fcd 00016f 00  AX  0   0  1
+  [199] .rel.text.z_[...] REL             00000000 04b3f0 0000e0 08   I 443 198  4
+  [200] .text.slice_[...] PROGBITS        00000000 00213c 00001d 00  AX  0   0  1
+  [201] .rel.text.sl[...] REL             00000000 04b4d0 000010 08   I 443 200  4
+  [202] .text.thread[...] PROGBITS        00000000 002159 00003f 00  AX  0   0  1
+  [203] .rel.text.th[...] REL             00000000 04b4e0 000018 08   I 443 202  4
+  [204] .text.z_rese[...] PROGBITS        00000000 002198 000053 00  AX  0   0  1
+  [205] .rel.text.z_[...] REL             00000000 04b4f8 000040 08   I 443 204  4
+  [206] .text.z_time[...] PROGBITS        00000000 0021eb 000063 00  AX  0   0  1
+  [207] .rel.text.z_[...] REL             00000000 04b538 000040 08   I 443 206  4
+  [208] .text.first       PROGBITS        00000000 00224e 00000f 00  AX  0   0  1
+  [209] .rel.text.first   REL             00000000 04b578 000010 08   I 443 208  4
+  [210] .text.next_t[...] PROGBITS        00000000 00225d 000053 00  AX  0   0  1
+  [211] .rel.text.ne[...] REL             00000000 04b588 000008 08   I 443 210  4
+  [212] .text.elapsed     PROGBITS        00000000 0022b0 000011 00  AX  0   0  1
+  [213] .rel.text.elapsed REL             00000000 04b590 000010 08   I 443 212  4
+  [214] .text.remove[...] PROGBITS        00000000 0022c1 00003d 00  AX  0   0  1
+  [215] .rel.text.re[...] REL             00000000 04b5a0 000008 08   I 443 214  4
+  [216] .text.z_add_[...] PROGBITS        00000000 0022fe 0001c5 00  AX  0   0  1
+  [217] .rel.text.z_[...] REL             00000000 04b5a8 000080 08   I 443 216  4
+  [218] .text.z_abor[...] PROGBITS        00000000 0024c3 00006e 00  AX  0   0  1
+  [219] .rel.text.z_[...] REL             00000000 04b628 000038 08   I 443 218  4
+  [220] .text.sys_cl[...] PROGBITS        00000000 002531 0000fc 00  AX  0   0  1
+  [221] .rel.text.sy[...] REL             00000000 04b660 000080 08   I 443 220  4
+  [222] .text.sys_cl[...] PROGBITS        00000000 00262d 00003d 00  AX  0   0  1
+  [223] .rel.text.sy[...] REL             00000000 04b6e0 000028 08   I 443 222  4
+  [224] .text.sys_cl[...] PROGBITS        00000000 00266a 00000d 00  AX  0   0  1
+  [225] .rel.text.sy[...] REL             00000000 04b708 000008 08   I 443 224  4
+  [226] .text.boot_banner PROGBITS        00000000 002677 000015 00  AX  0   0  1
+  [227] .rel.text.bo[...] REL             00000000 04b710 000010 08   I 443 226  4
+  [228] .native_sim_if    PROGBITS        00000015 00268c 00008f 00  AX  0   0  1
+  [229] .rel.native_[...] REL             00000000 04b720 000068 08   I 443 228  4
+  [230] .rodata.task[...] PROGBITS        00000000 00271b 000004 01 AMS  0   0  1
+  [231] .rodata.z_th[...] PROGBITS        00000000 00271f 00004e 01 AMS  0   0  1
+  [232] .rodata.z_cb[...] PROGBITS        00000000 00276d 000006 01 AMS  0   0  1
+  [233] .rodata.z_cb[...] PROGBITS        00000000 002774 0000c0 00   A  0   0  4
+  [234] .rel.rodata.[...] REL             00000000 04b788 000180 08   I 443 233  4
+  [235] .rodata.arch[...] PROGBITS        00000000 002834 00006c 01 AMS  0   0  1
+  [236] .rodata.z_im[...] PROGBITS        00000000 0028a0 000077 01 AMS  0   0  1
+  [237] .rodata.nati[...] PROGBITS        00000000 002918 000018 00   A  0   0  4
+  [238] .rel.rodata.[...] REL             00000000 04b908 000030 08   I 443 237  4
+  [239] .rodata.posi[...] PROGBITS        00000000 002930 00002e 01 AMS  0   0  1
+  [240] .rodata.str1.1    PROGBITS        00000000 00295e 0003c9 01 AMS  0   0  1
+  [241] .rodata.posi[...] PROGBITS        00000000 002d27 000032 01 AMS  0   0  1
+  [242] .rodata.__fu[...] PROGBITS        00000000 002d5c 00001d 00   A  0   0  4
+  [243] .rodata.prin[...] PROGBITS        00000000 002d79 000004 01 AMS  0   0  1
+  [244] .rodata.np_u[...] PROGBITS        00000000 002d7d 00007d 01 AMS  0   0  1
+  [245] .rodata.cst16     PROGBITS        00000000 002e00 000030 10  AM  0   0 16
+  [246] .rodata.z_cs[...] PROGBITS        00000000 002e30 00004b 01 AMS  0   0  1
+  [247] .rodata.levels.0  PROGBITS        00000000 002e7c 000018 00   A  0   0  4
+  [248] .rel.rodata.[...] REL             00000000 04b938 000030 08   I 443 247  4
+  [249] .rodata.z_im[...] PROGBITS        00000000 002e94 00002b 01 AMS  0   0  1
+  [250] .rodata.boot[...] PROGBITS        00000000 002ebf 00003d 01 AMS  0   0  1
+  [251] .data._char_out   PROGBITS        00000000 002efc 000004 00  WA  0   0  4
+  [252] .rel.data._c[...] REL             00000000 04b968 000008 08   I 443 251  4
+  [253] .data.curren[...] PROGBITS        00000000 002f00 000004 00  WA  0   0  4
+  [254] .data.uart_o[...] PROGBITS        00000000 002f20 0000e0 00  WA  0   0 32
+  [255] .rel.data.ua[...] REL             00000000 04b970 0000b8 08   I 443 254  4
+  [256] .data.slice_ticks PROGBITS        00000000 003000 000004 00  WA  0   0  4
+  [257] .data.timeou[...] PROGBITS        00000000 003004 000008 00  WA  0   0  4
+  [258] .rel.data.ti[...] REL             00000000 04ba28 000010 08   I 443 257  4
+  [259] initlevel         PROGBITS        00000008 00300c 000020 00   A  0   0  4
+  [260] .relinitlevel     REL             00000000 04ba38 000020 08   I 443 259  4
+  [261] device_area       PROGBITS        00000028 00302c 000020 00   A  0   0  4
+  [262] .reldevice_area   REL             00000000 04ba58 000028 08   I 443 261  4
+  [263] initlevel_error   PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [264] app_shmem_regions PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [265] k_p4wq_initp[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [266] _static_thre[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [267] device_deps       PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [268] shared_irq_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [269] crypto_drive[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [270] adc_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [271] auxdisplay_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [272] bbram_driver[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [273] bt_hci_drive[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [274] can_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [275] cellular_dri[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [276] charger_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [277] clock_contro[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [278] comparator_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [279] coredump_dri[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [280] counter_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [281] dac_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [282] dai_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [283] display_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [284] dma_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [285] edac_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [286] eeprom_drive[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [287] emul_bbram_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [288] fuel_gauge_e[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [289] emul_sensor_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [290] entropy_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [291] espi_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [292] espi_saf_dri[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [293] flash_driver[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [294] fpga_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [295] fuel_gauge_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [296] gnss_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [297] gpio_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [298] haptics_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [299] hwspinlock_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [300] i2c_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [301] i2c_target_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [302] i2s_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [303] i3c_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [304] ipm_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [305] led_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [306] led_strip_dr[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [307] lora_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [308] mbox_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [309] mdio_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [310] mipi_dbi_dri[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [311] mipi_dsi_dri[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [312] mspi_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [313] peci_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [314] ps2_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [315] ptp_clock_dr[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [316] pwm_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [317] regulator_pa[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [318] regulator_dr[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [319] reset_driver[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [320] retained_mem[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [321] rtc_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [322] sdhc_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [323] sensor_drive[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [324] smbus_driver[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [325] spi_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [326] stepper_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [327] syscon_drive[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [328] tee_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [329] video_driver[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [330] virtio_drive[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [331] w1_driver_ap[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [332] wdt_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [333] can_transcei[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [334] nrf_clock_co[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [335] i3c_target_d[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [336] its_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [337] vtd_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [338] renesas_elc_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [339] tgpio_driver[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [340] pcie_ctrl_dr[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [341] pcie_ep_driv[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [342] psi5_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [343] sent_driver_[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [344] svc_driver_a[...] PROGBITS        00000048 00304c 000000 00   W  0   0  1
+  [345] uart_driver_[...] PROGBITS        00000048 00304c 000014 00   A  0   0  4
+  [346] .reluart_dri[...] REL             00000000 04ba80 000010 08   I 443 345  4
+  [347] bc12_emul_dr[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [348] bc12_driver_[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [349] usbc_ppc_dri[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [350] tcpc_driver_[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [351] usbc_vbus_dr[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [352] ivshmem_driv[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [353] ethphy_drive[...] PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [354] ztest             PROGBITS        0000005c 003060 000000 00   W  0   0  1
+  [355] init_array        PROGBITS        0000005c 003060 000008 00  WA  0   0  1
+  [356] bt_l2cap_fix[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [357] bt_gatt_serv[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [358] log_strings_area  PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [359] log_stmesp_p[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [360] log_stmesp_s[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [361] log_const_area    PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [362] log_backend_area  PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [363] log_link_area     PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [364] tracing_back[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [365] intc_table_area   PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [366] symbol_to_keep    PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [367] shell_area        PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [368] shell_root_c[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [369] shell_subcmd[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [370] shell_dynami[...] PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [371] cfb_font_area     PROGBITS        00000064 003068 000000 00   W  0   0  1
+  [372] device_states     PROGBITS        00000064 003068 000004 00  WA  0   0  1
+  [373] log_mpsc_pbu[...] PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [374] log_msg_ptr_area  PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [375] log_dynamic_area  PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [376] k_timer_area      PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [377] k_mem_slab_area   PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [378] k_heap_area       PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [379] k_mutex_area      PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [380] k_stack_area      PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [381] k_msgq_area       PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [382] k_mbox_area       PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [383] k_pipe_area       PROGBITS        00000068 00306c 000000 00   W  0   0  1
+  [384] k_sem_area        PROGBITS        00000068 00306c 000030 00  WA  0   0  4
+  [385] .relk_sem_area    REL             00000000 04ba90 000030 08   I 443 384  4
+  [386] k_event_area      PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [387] k_queue_area      PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [388] k_fifo_area       PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [389] k_lifo_area       PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [390] k_condvar_area    PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [391] sys_mem_bloc[...] PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [392] net_buf_pool_area PROGBITS        00000098 00309c 000000 00   W  0   0  1
+  [393] native_pre_tasks  PROGBITS        00000098 00309c 00000c 00   A  0   0  4
+  [394] .relnative_p[...] REL             00000000 04bac0 000018 08   I 443 393  4
+  [395] .bss.t3_data      NOBITS          00000000 0030c0 00004c 00  WA  0   0 32
+  [396] .bss.t2_data      NOBITS          00000000 0030c0 00004c 00  WA  0   0 32
+  [397] .bss.t1_data      NOBITS          00000000 0030c0 00004c 00  WA  0   0 32
+  [398] .noinit."WES[...] NOBITS          00000000 0030c0 000200 00  WA  0   0  4
+  [399] .noinit."WES[...] NOBITS          00000000 0030c0 000200 00  WA  0   0  4
+  [400] .noinit."WES[...] NOBITS          00000000 0030c0 000200 00  WA  0   0  4
+  [401] .bss.te_state     NOBITS          00000000 0030c0 000004 00  WA  0   0  4
+  [402] .bss.nce_st       NOBITS          00000000 0030c0 000004 00  WA  0   0  4
+  [403] .bss.may_swap.0   NOBITS          00000000 0030c0 000004 00  WA  0   0  4
+  [404] .bss.irq_vec[...] NOBITS          00000000 0030c0 000200 00  WA  0   0 32
+  [405] .bss.n_pend       NOBITS          00000000 0030c0 000004 00  WA  0   0  4
+  [406] .bss.stdout_buff  NOBITS          00000000 0030c0 000100 00  WA  0   0 32
+  [407] .bss.stdinou[...] NOBITS          00000000 0030c0 000001 00  WA  0   0  1
+  [408] .bss.disconn[...] NOBITS          00000000 0030c0 000001 00  WA  0   0  1
+  [409] .bss.native_[...] NOBITS          00000000 0030c0 000014 00  WA  0   0  4
+  [410] .bss.last_ti[...] NOBITS          00000000 0030c0 000008 00  WA  0   0  8
+  [411] .bss.tick_period  NOBITS          00000000 0030c0 000008 00  WA  0   0  8
+  [412] .bss.z_sys_p[...] NOBITS          00000000 0030c0 000001 00  WA  0   0  1
+  [413] .noinit."WES[...] NOBITS          00000000 0030c0 000800 00  WA  0   0  4
+  [414] .noinit."WES[...] NOBITS          00000000 0030c0 000100 00  WA  0   0  4
+  [415] .bss.z_idle_[...] NOBITS          00000000 0030c0 00004c 00  WA  0   0 32
+  [416] .bss.z_main_[...] NOBITS          00000000 0030c0 00004c 00  WA  0   0 32
+  [417] .noinit."WES[...] NOBITS          00000000 0030c0 000400 00  WA  0   0  4
+  [418] .bss._kernel      NOBITS          00000000 0030c0 000020 00  WA  0   0 32
+  [419] .bss.lock         NOBITS          00000000 0030c0 000000 00  WA  0   0  1
+  [420] .bss._thread[...] NOBITS          00000000 0030c0 00004c 00  WA  0   0 32
+  [421] .bss._sched_[...] NOBITS          00000000 0030c0 000000 00  WA  0   0  1
+  [422] .bss.slice_e[...] NOBITS          00000000 0030c0 000001 00  WA  0   0  1
+  [423] .bss.slice_t[...] NOBITS          00000000 0030c0 000014 00  WA  0   0  4
+  [424] .bss.slice_m[...] NOBITS          00000000 0030c0 000004 00  WA  0   0  4
+  [425] .bss.announc[...] NOBITS          00000000 0030c0 000004 00  WA  0   0  4
+  [426] .bss.curr_tick    NOBITS          00000000 0030c0 000008 00  WA  0   0  8
+  [427] .comment          PROGBITS        00000000 0030c0 000604 01  MS  0   0  1
+  [428] .note.GNU-stack   PROGBITS        00000000 0036c4 000000 00      0   0  1
+  [429] .debug_aranges    PROGBITS        00000000 0036c4 0009d8 00      0   0  1
+  [430] .rel.debug_a[...] REL             00000000 04bad8 0004f0 08   I 443 429  4
+  [431] .debug_info       PROGBITS        00000000 00409c 01446d 00      0   0  1
+  [432] .rel.debug_info   REL             00000000 04bfc8 00d1a0 08   I 443 431  4
+  [433] .debug_abbrev     PROGBITS        00000000 018509 00534e 00      0   0  1
+  [434] .debug_line       PROGBITS        00000000 01d857 00b8a1 00      0   0  1
+  [435] .rel.debug_line   REL             00000000 059168 0003b8 08   I 443 434  4
+  [436] .debug_frame      PROGBITS        00000000 0290f8 001da0 00      0   0  4
+  [437] .rel.debug_frame  REL             00000000 059520 000a98 08   I 443 436  4
+  [438] .debug_str        PROGBITS        00000000 02ae98 00ca70 01  MS  0   0  1
+  [439] .debug_loc        PROGBITS        00000000 037908 007dfb 00      0   0  1
+  [440] .rel.debug_loc    REL             00000000 059fb8 0046e0 08   I 443 439  4
+  [441] .debug_ranges     PROGBITS        00000000 03f703 001ff8 00      0   0  1
+  [442] .rel.debug_ranges REL             00000000 05e698 001aa0 08   I 443 441  4
+  [443] .symtab           SYMTAB          00000000 0416fc 004610 10     444 438  4
+  [444] .strtab           STRTAB          00000000 045d0c 0049e2 00      0   0  1
+  [445] .shstrtab         STRTAB          00000000 060138 001c7b 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), p (processor specific)
+
+There are no program headers in this file.
