@@ -1,5 +1,0 @@
-west:
-  command: /home/dharm/zephyrproject/.venv/bin/west build -p always -b native_sim
-    .
-  topdir: /home/dharm/zephyrproject
-  version: 1.4.0
