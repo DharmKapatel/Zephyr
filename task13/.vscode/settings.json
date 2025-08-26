@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "device.h": "c",
-        "stdbool.h": "c"
-    }
-}
