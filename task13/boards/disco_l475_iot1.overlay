@@ -1,42 +1,3 @@
-/delete-node/ &boot_partition;
-/delete-node/ &slot0_partition;
-/delete-node/ &storage_partition;
-/delete-node/ &slot1_partition;
-/delete-node/ &slot2_partition;
-
-&flash0 {
-	partitions {
-		compatible = "fixed-partitions";
-
-		boot_partition: partition@0 {
-			label = "mcu-boot";
-			reg = <0x0 DT_SIZE_K(64)>;
-			read-only;
-		};
-		
-		slot0_partition: partition@10000 {
-			label = "image-0";
-			reg = <0x10000 DT_SIZE_K(100)>;
-		};
-
-		slot1_partition: partition@29000 {
-			label = "image-1";
-			reg = <0x29000 DT_SIZE_K(100)>;
-		};
-
-		storage_partition: partition@42000 {
-			label = "storage";
-			reg = <0x42000 DT_SIZE_K(32)>;
-		};
-
-		lfs1_partition: partition@4A000 {
-			label = "lfs1";
-			reg = <0x4A000 DT_SIZE_K(100)>;
-		};
-	};
-};
-
-
 / {
     aliases {
         ht-sensor = &hts;
@@ -64,3 +25,34 @@
         irq-gpios = <&gpiod 11 GPIO_ACTIVE_HIGH>;
     };
 };
+
+&flash0 {
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        /* Firmware area */
+        firmware_partition: partition@0 {
+            label = "firmware";
+            reg = <0x00000000 DT_SIZE_K(896)>;
+        };
+
+        /* LittleFS partitions */
+        humidity_fs: partition@e0000 {
+            label = "humidity_lfs";
+            reg = <0x000E0000 DT_SIZE_K(32)>;
+        };
+
+        pressure_fs: partition@e8000 {
+            label = "pressure_lfs";
+            reg = <0x000E8000 DT_SIZE_K(32)>;
+        };
+
+        temp_fs: partition@f0000 {
+            label = "temp_lfs";
+            reg = <0x000F0000 DT_SIZE_K(64)>;
+        };
+    };
+};
+
