@@ -1,3 +1,22 @@
+/**
+ * @file logger.c
+ * @brief Persistent sensor data logger using LittleFS and circular buffer.
+ *
+ * This module provides a background thread that consumes sensor messages
+ * from a message queue, stores them in a pre-allocated circular buffer file,
+ * and maintains persistent metadata for head index and number of entries.
+ *
+ * The filesystem is mounted on `lfs1_partition` and uses LittleFS.
+ *
+ * - Data is written to `/lfs/sensor_data`.
+ * - Metadata (head index, entry count) is stored in `/lfs/logger_meta`.
+ * - Entries are stored in a fixed-size file for efficient overwrites.
+ *
+ * @note All write operations are thread-safe via a mutex.
+ *
+ * @author Dharm Kapatel
+ */
+
 #include "logger.h"
 #include <zephyr/kernel.h>
 #include <zephyr/fs/fs.h>
@@ -10,10 +29,13 @@ LOG_MODULE_REGISTER(logger);
 #define MOUNT_POINT "/lfs"
 #define LOG_FILE_PATH "/lfs/sensor_data"
 
+/** Message queue for passing sensor messages to the logger thread. */
 K_MSGQ_DEFINE(sensor_msgq, sizeof(struct sensor_message), MAX_QUEUE, 4);
 
+/** Default LittleFS configuration. */
 FS_LITTLEFS_DECLARE_DEFAULT_CONFIG(lfs_config);
 
+/** Filesystem mount configuration. */
 static struct fs_mount_t mount = {
     .type = FS_LITTLEFS,
     .fs_data = &lfs_config,
@@ -21,25 +43,42 @@ static struct fs_mount_t mount = {
     .mnt_point = MOUNT_POINT,
 };
 
+/** Logger thread handle and stack. */
 static struct k_thread logger_thread_data;
 static K_THREAD_STACK_DEFINE(logger_stack, 4096);
+
+/** Mutex to guard file access. */
 static K_MUTEX_DEFINE(file_mutex);
 
-/* Entry size (one queued record) */
+/** Entry size (one queued record). */
 static const size_t ENTRY_SIZE = sizeof(struct sensor_message);
 
-/* Persistent meta for circular buffer */
+/**
+ * @brief Persistent metadata for circular buffer.
+ *
+ * This metadata is stored in `/lfs/logger_meta` and tracks:
+ * - `head_index`: next write index in circular buffer.
+ * - `entries_count`: number of valid entries currently stored.
+ */
 struct logger_meta {
-    uint32_t head_index;     /* next write index (0..MAX_ENTRIES-1) */
-    uint32_t entries_count;  /* number of valid entries currently stored (<= MAX_ENTRIES) */
+    uint32_t head_index;     /**< Next write index (0..MAX_ENTRIES-1). */
+    uint32_t entries_count;  /**< Number of valid entries (<= MAX_ENTRIES). */
 } __packed;
 
+/** Runtime metadata copy. */
 static struct logger_meta meta;
 
-/* meta file path */
+/** Path to metadata file. */
 #define META_FILE_PATH MOUNT_POINT "/logger_meta"
 
-/* persist/load meta helpers */
+/**
+ * @brief Save metadata persistently to LittleFS.
+ *
+ * @param[in] m Pointer to metadata structure to save.
+ *
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
 static int meta_save(const struct logger_meta *m)
 {
     struct fs_file_t f;
@@ -52,6 +91,14 @@ static int meta_save(const struct logger_meta *m)
     return (written == (ssize_t)sizeof(*m)) ? 0 : -1;
 }
 
+/**
+ * @brief Load metadata from LittleFS.
+ *
+ * @param[out] m Pointer to structure to fill with loaded metadata.
+ *
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
 static int meta_load(struct logger_meta *m)
 {
     struct fs_file_t f;
@@ -64,7 +111,12 @@ static int meta_load(struct logger_meta *m)
     return (r == (ssize_t)sizeof(*m)) ? 0 : -1;
 }
 
-/* Create data file if missing. If first-run, pre-allocate zero bytes for MAX_ENTRIES */
+/**
+ * @brief Ensure the data file exists and is pre-allocated.
+ *
+ * Creates `/lfs/sensor_data` if missing, and pre-allocates space for
+ * `MAX_ENTRIES * ENTRY_SIZE` bytes to support circular buffer writes.
+ */
 static void ensure_data_file(void)
 {
     struct fs_file_t f;
@@ -103,6 +155,16 @@ static void ensure_data_file(void)
     LOG_INF("Created and pre-allocated %s (%u entries)", LOG_FILE_PATH, MAX_ENTRIES);
 }
 
+/**
+ * @brief Logger background thread.
+ *
+ * This thread waits for messages in the queue, writes them into the
+ * circular buffer at the current head index, and updates metadata.
+ *
+ * @param a Unused
+ * @param b Unused
+ * @param c Unused
+ */
 static void logger_thread(void *a, void *b, void *c)
 {
     struct sensor_message msg;
@@ -141,6 +203,14 @@ static void logger_thread(void *a, void *b, void *c)
     }
 }
 
+/**
+ * @brief Initialize logger system.
+ *
+ * - Mounts the filesystem.
+ * - Ensures the data file exists (creates if missing).
+ * - Loads metadata (creates new if missing).
+ * - Starts the logger thread.
+ */
 void logger_init(void)
 {
     int rc = fs_mount(&mount);
@@ -176,6 +246,13 @@ void logger_init(void)
                     5, 0, K_NO_WAIT);
 }
 
+/**
+ * @brief Enqueue a sensor message to be logged.
+ *
+ * Non-blocking enqueue: if queue is full, the message is dropped.
+ *
+ * @param[in] msg Pointer to message to enqueue.
+ */
 void logger_enqueue(const struct sensor_message *msg)
 {
     k_msgq_put(&sensor_msgq, msg, K_NO_WAIT);

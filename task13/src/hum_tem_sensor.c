@@ -1,3 +1,16 @@
+/**
+ * @file hum_temp_sensor.c
+ * @brief Humidity and Temperature sensor interface using Zephyr sensor API.
+ *
+ * This module handles initialization, periodic sampling, and logging
+ * of humidity and temperature data from the HTS221 (or compatible) sensor.
+ *
+ * The sampled data is packaged into `sensor_data` and pushed to the
+ * logger message queue.
+ *
+ * @author Dharm Kapatel
+ */
+
 #include "hum_temp_sensor.h"
 #include "logger.h"
 #include <zephyr/device.h>
@@ -8,11 +21,23 @@
 LOG_MODULE_REGISTER(hum_temp);
 
 #if DT_NODE_EXISTS(DT_ALIAS(ht_sensor))
+/** Sensor device handle retrieved from devicetree alias `ht_sensor`. */
 const struct device *const hts_dev = DEVICE_DT_GET(DT_ALIAS(ht_sensor));
 #else
 #error "Humidity-Temperature sensor not found."
 #endif
 
+/**
+ * @brief Fetch latest humidity and temperature sensor data.
+ *
+ * Reads values from the HTS221 sensor and fills the provided
+ * `sensor_data` structure with temperature, humidity, and timestamp.
+ *
+ * @param[out] data Pointer to user-provided struct to hold sensor data.
+ *
+ * @retval 0 Success
+ * @retval -1 Failure (device not ready or sensor read error)
+ */
 int hum_temp_sensor_get_data(struct sensor_data *data)
 {
     if (!device_is_ready(hts_dev)) return -1;
@@ -33,6 +58,15 @@ int hum_temp_sensor_get_data(struct sensor_data *data)
     return 0;
 }
 
+/**
+ * @brief Initialize humidity-temperature sensor thread.
+ *
+ * Ensures the device is ready and starts a dedicated thread
+ * for periodic sampling and logging of sensor data.
+ *
+ * @retval 0 Success
+ * @retval -1 Failure (device not ready)
+ */
 int hum_temp_sensor_init(void)
 {
     if (!device_is_ready(hts_dev)) {
@@ -42,6 +76,7 @@ int hum_temp_sensor_init(void)
 
     static struct k_thread hum_temp_thread_data;
     static K_THREAD_STACK_DEFINE(hum_temp_stack, 1024);
+
     k_thread_create(&hum_temp_thread_data, hum_temp_stack,
                     K_THREAD_STACK_SIZEOF(hum_temp_stack),
                     hum_temp_thread, NULL, NULL, NULL,
@@ -50,6 +85,17 @@ int hum_temp_sensor_init(void)
     return 0;
 }
 
+/**
+ * @brief Thread function for periodic sampling.
+ *
+ * This thread runs indefinitely, fetching data every 2 seconds
+ * from the humidity-temperature sensor and enqueueing it to
+ * the logger module.
+ *
+ * @param a Unused
+ * @param b Unused
+ * @param c Unused
+ */
 void hum_temp_thread(void *a, void *b, void *c)
 {
     struct sensor_data local;
