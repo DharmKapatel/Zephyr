@@ -1,0 +1,66 @@
+/delete-node/ &boot_partition;
+/delete-node/ &slot0_partition;
+/delete-node/ &storage_partition;
+/delete-node/ &slot1_partition;
+/delete-node/ &slot2_partition;
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+
+		boot_partition: partition@0 {
+			label = "mcu-boot";
+			reg = <0x0 DT_SIZE_K(64)>;
+			read-only;
+		};
+		
+		slot0_partition: partition@10000 {
+			label = "image-0";
+			reg = <0x10000 DT_SIZE_K(100)>;
+		};
+
+		slot1_partition: partition@29000 {
+			label = "image-1";
+			reg = <0x29000 DT_SIZE_K(100)>;
+		};
+
+		storage_partition: partition@42000 {
+			label = "storage";
+			reg = <0x42000 DT_SIZE_K(32)>;
+		};
+
+		lfs1_partition: partition@4A000 {
+			label = "lfs1";
+			reg = <0x4A000 DT_SIZE_K(100)>;
+		};
+	};
+};
+
+
+/ {
+    aliases {
+        ht-sensor = &hts;
+        pressure-sensor = &lps22hb;
+        imu-sensor = &lsm6dsl;
+    };
+};
+
+&i2c2 {
+
+    hts: hts221@5f {
+        compatible = "st,hts221";
+        reg = <0x5f>;
+        drdy-gpios = <&gpiod 15 GPIO_ACTIVE_HIGH>;
+    };
+
+    lps22hb: lps22hb-press@5d {
+        compatible = "st,lps22hb-press";
+        reg = <0x5d>;
+    };
+
+    lsm6dsl: lsm6dsl@6a {
+        compatible = "st,lsm6dsl";
+        reg = <0x6a>;
+        irq-gpios = <&gpiod 11 GPIO_ACTIVE_HIGH>;
+    };
+};
