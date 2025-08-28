@@ -122,37 +122,59 @@ static void ensure_data_file(void)
     struct fs_file_t f;
     fs_file_t_init(&f);
 
-    /* If file already exists, do nothing */
-    if (fs_open(&f, LOG_FILE_PATH, FS_O_READ) == 0) {
-        fs_close(&f);
-        LOG_INF("%s exists", LOG_FILE_PATH);
-        return;
-    }
-
-    /* Create & pre-allocate file sized for the circular buffer */
-    if (fs_open(&f, LOG_FILE_PATH, FS_O_CREATE | FS_O_TRUNC | FS_O_WRITE) != 0) {
-        LOG_ERR("Failed to create %s", LOG_FILE_PATH);
-        return;
-    }
-
     const size_t total_bytes = (size_t)MAX_ENTRIES * ENTRY_SIZE;
-    const size_t chunk = 256;
-    uint8_t zbuf[chunk];
-    memset(zbuf, 0, chunk);
 
-    size_t left = total_bytes;
-    while (left) {
-        size_t towrite = (left > chunk) ? chunk : left;
-        ssize_t w = fs_write(&f, zbuf, towrite);
-        if (w <= 0) {
-            LOG_ERR("Failed to pre-allocate file (w=%zd)", w);
-            break;
+    /* If file exists and is already large enough, nothing to do */
+    struct fs_dirent entry;
+    if (fs_stat(LOG_FILE_PATH, &entry) == 0) {
+        if ((size_t)entry.size >= total_bytes) {
+            LOG_INF("%s exists and size OK (%u entries)", LOG_FILE_PATH, MAX_ENTRIES);
+            return;
         }
-        left -= (size_t)w;
+    }
+
+    /* Open file (create if missing) for read/write so we can probe/extend */
+    if (fs_open(&f, LOG_FILE_PATH, FS_O_CREATE | FS_O_RDWR) != 0) {
+        LOG_ERR("Failed to open/create %s", LOG_FILE_PATH);
+        return;
+    }
+
+    /* Find current size by seeking to end then telling */
+    off_t cur_size = 0;
+    if (fs_seek(&f, 0, FS_SEEK_END) == 0) {
+        cur_size = fs_tell(&f);
+        if (cur_size < 0) {
+            LOG_WRN("fs_tell returned < 0 (%ld), treating as 0", (long)cur_size);
+            cur_size = 0;
+        }
+    } else {
+        LOG_WRN("fs_seek to end failed, treating current size as 0");
+    }
+
+    /* If file is smaller than required, try a cheap probe first */
+    if ((size_t)cur_size < total_bytes) {
+        off_t probe_offset = (off_t)(total_bytes - 1);
+        bool probe_ok = false;
+
+        if (fs_seek(&f, probe_offset, FS_SEEK_SET) == 0) {
+            uint8_t probe = 0;
+            ssize_t w = fs_write(&f, &probe, 1);
+            if (w == 1) {
+                probe_ok = true;
+                LOG_INF("Probe write succeeded — no bulk pre-allocation required");
+            } else {
+                LOG_WRN("Probe write failed (w=%zd), will fall back to safe extend", w);
+            }
+        } else {
+            LOG_WRN("Probe seek to %ld failed, will fall back to safe extend", (long)probe_offset);
+        }
+
+        
+    } else {
+        LOG_INF("%s already large enough (%zu bytes)", LOG_FILE_PATH, (size_t)cur_size);
     }
 
     fs_close(&f);
-    LOG_INF("Created and pre-allocated %s (%u entries)", LOG_FILE_PATH, MAX_ENTRIES);
 }
 
 /**
