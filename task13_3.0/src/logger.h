@@ -4,7 +4,8 @@
  * @brief Logging interface for queuing sensor messages in Zephyr.
  *
  * This module provides functions to enqueue sensor messages into
- * a shared circular buffer for further processing (e.g., storage).
+ * a shared circular buffer that is placed in SRAM1 (reserved devicetree
+ * node 'shared_logger'). The logger writes entries to LittleFS.
  */
 
 #ifndef LOGGER_H
@@ -28,7 +29,7 @@ static inline float sensor_to_float(const struct sensor_value *val)
     return (float)val->val1 + (float)val->val2 / 1000000.0f;
 }
 
-/** @brief Maximum number of queued messages in memory. */
+/** @brief Maximum number of queued messages in memory (compile-time upper bound). */
 #define MAX_QUEUE 50
 
 /** @brief Maximum number of entries stored in logger persistent file. */
@@ -37,8 +38,9 @@ static inline float sensor_to_float(const struct sensor_value *val)
 /**
  * @brief Initialize the logger module.
  *
- * This function sets up internal data structures such as
- * shared buffer, semaphores and storage for incoming sensor messages.
+ * - Mounts the filesystem.
+ * - Sets up the shared buffer located in SRAM1 (devicetree node `shared_logger`).
+ * - Starts the logger thread which consumes messages and writes them to LittleFS.
  */
 void logger_init(void);
 

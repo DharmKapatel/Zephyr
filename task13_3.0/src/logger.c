@@ -1,28 +1,31 @@
 /**
  * @file logger.c
- * @brief Persistent sensor data logger using LittleFS and circular buffer.
+ * @brief Persistent sensor data logger using LittleFS and circular buffer in SRAM1.
  *
- * Replaced k_msgq with an in-RAM shared circular buffer protected by
- * a mutex and signalled with a counting semaphore.
+ * Shared buffer is located in the reserved devicetree memory node
+ * labeled "shared_logger" (must be created via .overlay).
  *
- * This module provides a background thread that consumes sensor messages
- * from the in-memory buffer, stores them in a pre-allocated circular buffer file,
- * and maintains persistent metadata for head index and number of entries.
- *
- * @author Dharm
+ * Producers do non-blocking pushes (drop on full); logger thread blocks
+ * waiting for available items, then writes entries to /lfs/sensor_data.
  */
 
 #include "logger.h"
+
 #include <zephyr/kernel.h>
 #include <zephyr/fs/fs.h>
 #include <zephyr/fs/littlefs.h>
 #include <zephyr/logging/log.h>
-#include <string.h> /* memset */
+#include <zephyr/devicetree.h>
+#include <zephyr/sys/util.h>
+#include <string.h> /* memcpy */
+#include <stdint.h>
 
 LOG_MODULE_REGISTER(logger);
 
+/* LittleFS paths */
 #define MOUNT_POINT "/lfs"
 #define LOG_FILE_PATH "/lfs/sensor_data"
+#define META_FILE_PATH MOUNT_POINT "/logger_meta"
 
 /** Default LittleFS configuration. */
 FS_LITTLEFS_DECLARE_DEFAULT_CONFIG(lfs_config);
@@ -42,24 +45,40 @@ static K_THREAD_STACK_DEFINE(logger_stack, 4096);
 /** Mutex to guard file access. */
 static K_MUTEX_DEFINE(file_mutex);
 
-/** In-memory circular buffer for sensor messages (replaces k_msgq). */
-static struct sensor_message msg_buffer[MAX_QUEUE];
-static uint32_t buf_head = 0; /**< index to pop (0..MAX_QUEUE-1) */
-static uint32_t buf_tail = 0; /**< index to push */
-static uint32_t buf_count = 0;/**< number of messages currently in buffer */
+/** Entry size (one queued record) - used for file I/O. */
+static const size_t ENTRY_SIZE = sizeof(struct sensor_message);
 
-/** Mutex protecting the in-memory circular buffer. */
+/**
+ * Devicetree: reserved node label must be "shared_logger"
+ * overlay should provide a reserved-memory node with label "shared_logger".
+ */
+#define SHARED_NODE DT_NODELABEL(shared_logger)
+
+BUILD_ASSERT(DT_NODE_HAS_STATUS(SHARED_NODE, okay),
+             "Devicetree node 'shared_logger' not found or not 'okay'. Add overlay to reserve SRAM1.");
+
+/* Base addr & size from DTS */
+#define SHARED_BASE_ADDR ((uintptr_t)DT_REG_ADDR(SHARED_NODE))
+#define SHARED_SIZE_BYTES ((size_t)DT_REG_SIZE(SHARED_NODE))
+
+/* Compute region capacity (number of sensor_message slots) at runtime */
+static size_t region_capacity = 0;
+
+/* Backing buffer pointer (points into SRAM1 reserved area) */
+static volatile struct sensor_message *msg_buffer = NULL;
+
+/* In-memory indices (kept in normal SRAM) */
+static uint32_t buf_head = 0; /**< index to pop (0..region_capacity-1) */
+static uint32_t buf_tail = 0; /**< index to push */
+static uint32_t buf_count = 0; /**< number of messages currently in buffer */
+
+/** Mutex protecting the in-memory circular buffer (short critical sections). */
 static K_MUTEX_DEFINE(buffer_mutex);
 
 /** Semaphore counting available items in buffer (initial 0). */
 static struct k_sem items_sem;
 
-/** Entry size (one queued record) - used for file I/O. */
-static const size_t ENTRY_SIZE = sizeof(struct sensor_message);
-
-/**
- * @brief Persistent metadata for circular buffer stored on LittleFS.
- */
+/** Persistent metadata for circular buffer stored on LittleFS. */
 struct logger_meta {
     uint32_t head_index;     /**< Next write index (0..MAX_ENTRIES-1). */
     uint32_t entries_count;  /**< Number of valid entries currently stored. */
@@ -68,10 +87,10 @@ struct logger_meta {
 /** Runtime metadata copy. */
 static struct logger_meta meta;
 
-/** Path to metadata file. */
-#define META_FILE_PATH MOUNT_POINT "/logger_meta"
+/* Drop statistics */
+static uint32_t dropped_count = 0;
 
-/* ---- Persistent meta helpers (unchanged) ---- */
+/* ---- Persistent meta helpers ---- */
 static int meta_save(const struct logger_meta *m)
 {
     struct fs_file_t f;
@@ -96,12 +115,7 @@ static int meta_load(struct logger_meta *m)
     return (r == (ssize_t)sizeof(*m)) ? 0 : -1;
 }
 
-/**
- * @brief Ensure the data file exists and is pre-allocated.
- *
- * Creates `/lfs/sensor_data` if missing, and pre-allocates space for
- * `MAX_ENTRIES * ENTRY_SIZE` bytes to support circular buffer writes.
- */
+/* ---- Ensure LittleFS data file exists (unchanged logic) ---- */
 static void ensure_data_file(void)
 {
     struct fs_file_t f;
@@ -154,8 +168,6 @@ static void ensure_data_file(void)
             LOG_WRN("Probe seek to %ld failed, will fall back to safe extend", (long)probe_offset);
         }
 
-        /* If probe failed we could optionally write zeros in chunks here.
-         * For now we rely on the probe approach as before. */
         (void)probe_ok;
     } else {
         LOG_INF("%s already large enough (%zu bytes)", LOG_FILE_PATH, (size_t)cur_size);
@@ -164,7 +176,34 @@ static void ensure_data_file(void)
     fs_close(&f);
 }
 
-/* ---- In-memory buffer API (internal) ---- */
+/* ---- Shared SRAM1 buffer helpers ---- */
+
+/* Compute and initialize buffer pointer + capacity. Called from logger_init() */
+static int shared_region_setup(void)
+{
+    if (SHARED_SIZE_BYTES < sizeof(struct sensor_message)) {
+        LOG_ERR("shared_logger region too small: %zu bytes", SHARED_SIZE_BYTES);
+        return -1;
+    }
+
+    region_capacity = SHARED_SIZE_BYTES / sizeof(struct sensor_message);
+    if (region_capacity == 0) {
+        LOG_ERR("shared_logger region has zero capacity");
+        return -1;
+    }
+
+    /* Cap region_capacity to MAX_QUEUE if you want a compile-time upper bound */
+    if (region_capacity > (size_t)MAX_QUEUE) {
+        region_capacity = (size_t)MAX_QUEUE;
+    }
+
+    msg_buffer = (volatile struct sensor_message *)((uintptr_t)SHARED_BASE_ADDR);
+
+    LOG_INF("Shared logger region: base=0x%08x size=%u slots=%u",
+            (uint32_t)SHARED_BASE_ADDR, (uint32_t)SHARED_SIZE_BYTES, (uint32_t)region_capacity);
+
+    return 0;
+}
 
 /**
  * @brief Push a message into the in-memory buffer (non-blocking).
@@ -176,17 +215,23 @@ static int buffer_push(const struct sensor_message *msg)
     /* Non-blocking push: try to take buffer mutex without waiting */
     if (k_mutex_lock(&buffer_mutex, K_NO_WAIT) != 0) {
         /* Busy -> drop (matches original non-blocking queue behavior) */
+        dropped_count++;
         return -1;
     }
 
-    if (buf_count >= MAX_QUEUE) {
+    if (buf_count >= (uint32_t)region_capacity) {
         /* full -> drop */
+        dropped_count++;
         k_mutex_unlock(&buffer_mutex);
         return -1;
     }
 
-    msg_buffer[buf_tail] = *msg;
-    buf_tail = (buf_tail + 1U) % MAX_QUEUE;
+    /* copy into reserved SRAM1 slot */
+    /* use memcpy to avoid strict-alias problems and to be explicit */
+    memcpy((void *)&( (struct sensor_message *)msg_buffer )[buf_tail],
+           (const void *)msg, ENTRY_SIZE);
+
+    buf_tail = (buf_tail + 1U) % (uint32_t)region_capacity;
     buf_count++;
 
     /* Signal an available item */
@@ -213,8 +258,11 @@ static int buffer_pop(struct sensor_message *out)
         return -1;
     }
 
-    *out = msg_buffer[buf_head];
-    buf_head = (buf_head + 1U) % MAX_QUEUE;
+    memcpy((void *)out,
+           (const void *)&( (struct sensor_message *)msg_buffer )[buf_head],
+           ENTRY_SIZE);
+
+    buf_head = (buf_head + 1U) % (uint32_t)region_capacity;
     buf_count--;
 
     k_mutex_unlock(&buffer_mutex);
@@ -222,7 +270,6 @@ static int buffer_pop(struct sensor_message *out)
 }
 
 /* ---- Logger background thread ---- */
-
 static void logger_thread(void *a, void *b, void *c)
 {
     ARG_UNUSED(a); ARG_UNUSED(b); ARG_UNUSED(c);
@@ -303,9 +350,15 @@ void logger_init(void)
                 meta.head_index, meta.entries_count);
     }
 
+    /* Setup shared SRAM1 region as circular buffer */
+    if (shared_region_setup() != 0) {
+        LOG_ERR("shared_region_setup failed; logger not started");
+        return;
+    }
+
     /* Initialize in-memory buffer tracking primitives */
     buf_head = buf_tail = buf_count = 0;
-    k_sem_init(&items_sem, 0, MAX_QUEUE);
+    k_sem_init(&items_sem, 0, (int)region_capacity);
 
     /* start the logger thread */
     k_thread_create(&logger_thread_data, logger_stack,
@@ -314,15 +367,14 @@ void logger_init(void)
                     5, 0, K_NO_WAIT);
 }
 
-/**
- * @brief Enqueue a sensor message to be logged.
- *
- * Non-blocking enqueue: if queue is full (or buffer mutex busy), the message is dropped.
- *
- * @param[in] msg Pointer to message to enqueue.
- */
 void logger_enqueue(const struct sensor_message *msg)
 {
     (void)buffer_push(msg);
     /* buffer_push returns -1 on drop; we intentionally ignore since original API was void */
+}
+
+/* Optional helper: query drops (not part of original API but useful) */
+uint32_t logger_dropped_count(void)
+{
+    return dropped_count;
 }

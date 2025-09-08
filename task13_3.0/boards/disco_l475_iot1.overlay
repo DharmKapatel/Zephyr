@@ -64,3 +64,19 @@
         irq-gpios = <&gpiod 11 GPIO_ACTIVE_HIGH>;
     };
 };
+
+/ {
+    reserved-memory {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges;
+
+        /* Reserve 8 KiB at start of SRAM1 (absolute address form) */
+        shared_logger: shared_logger@10000000 {
+            reg = <0x10000000 0x2000>; /* base address, size (8 KiB) */
+            compatible = "shared-ram";
+            label = "shared_logger";
+        };
+    };
+};
+
